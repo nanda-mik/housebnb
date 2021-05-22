@@ -3,7 +3,7 @@ from rest_framework import viewsets, status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from airApp.models import User, House
+from airApp.models import User, House, HouseType
 from airApp.serializers import UserSerializer, HouseSerializer
 
 # Create your views here.
@@ -26,27 +26,31 @@ def book_house(req,pk):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     try:
-        user = User.objects.get(name= req.data.owner)
+        user = User.objects.get(name= req.data.get("owner"))
 
     except User.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    req.data.owner = user.id
+    try:
+        housetype = HouseType.objects.get(name= req.data.get("roomtype"))
 
-    # print(req.data)
-    # print(req.data.owner)
+    except HouseType.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    print(user.id)
+    print(housetype.id)
     
     if house.booked == False:
-        # house.booked = True
-        # house.owner = req.data.owner
-        # house.roomtype = req.data.roomtype
-        # house.save()
-        serializer = HouseSerializer(house, data=req.data)
-        print("checking")
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        house.booked = True
+        house.owner = user.id
+        house.roomtype = housetype.id
+        house.save()
+        # serializer = HouseSerializer(house, data=req.data)
+        # print("checking")
+        # if serializer.is_valid():
+        #     serializer.save()
+        #     return Response(serializer.data)
+        # return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     return Response({"Error":"error"},status=status.HTTP_400_BAD_REQUEST)
     
