@@ -42,9 +42,10 @@ def book_house(req,pk):
     
     if house.booked == False:
         house.booked = True
-        house.owner = user.id
-        house.roomtype = housetype.id
+        house.owner = user
+        house.roomtype = housetype
         house.save()
+        return Response({"Udated":"updated"},status=status.HTTP_201_CREATED)
         # serializer = HouseSerializer(house, data=req.data)
         # print("checking")
         # if serializer.is_valid():
