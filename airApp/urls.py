@@ -8,7 +8,7 @@ router.register(r'users', views.Userviewset)
 router.register(r'house',views.Houseviewset)
 
 urlpatterns = [
-    path('book/<int:pk>', views.book_house, name="book")
+    path('book/<int:pk>', views.BookViewSet.as_view(), name="book")
 ]
 # passing the house id as parameter which is to be booked
 urlpatterns += router.urls
