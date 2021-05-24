@@ -18,32 +18,25 @@ class Houseviewset(viewsets.ModelViewSet):
 
 @api_view(['POST'])
 def book_house(req,pk):
-    print(req.data)
     try:
         house = House.objects.get(pk=pk)
-
     except House.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     try:
         user = User.objects.get(name= req.data.get("owner"))
-
     except User.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     try:
         housetype = HouseType.objects.get(name= req.data.get("roomtype"))
-
     except HouseType.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
-
-    print(user.id)
-    print(housetype.id)
     
     if house.booked == False:
         house.booked = True
         house.owner = user
-        house.roomtype = housetype
+        house.roomtype.add(housetype)
         house.save()
         return Response({"Udated":"updated"},status=status.HTTP_201_CREATED)
         # serializer = HouseSerializer(house, data=req.data)

@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-#)atkwqe%7%!eq6&=7r=m*p=1a$o71b8-wgj5q+@o!xqos4k-h'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -80,12 +80,12 @@ WSGI_APPLICATION = 'airbnb.wsgi.application'
 
 DATABASES = {
     'default': {
-            'ENGINE': "django.db.backends.postgresql_psycopg2",
-            'NAME': 'airbnb',
-            'USER': 'postgres',
+            'ENGINE': os.getenv('ENGINE'),
+            'NAME': os.getenv('NAME'),
+            'USER': os.getenv('USER'),
             'PASSWORD': os.getenv('PASS'),
-            'HOST': 'localhost',
-            'PORT':  '5432',
+            'HOST': os.getenv('HOST'),
+            'PORT':  os.getenv('PORT'),
         }
 }
 

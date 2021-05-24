@@ -20,8 +20,8 @@ class House(models.Model):
     address = models.CharField(max_length=200)
     price = models.IntegerField()
     booked = models.BooleanField(default=False)
-    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='house', null=True, blank=True)
-    roomtype = models.ForeignKey(HouseType, on_delete=models.CASCADE, default="", related_name='house',null=True, blank=True)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE,null=True,blank=True)
+    roomtype = models.ManyToManyField(HouseType,blank=True)
 
     def __str__(self):
         return self.name 
